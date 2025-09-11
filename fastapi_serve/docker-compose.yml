@@ -1,0 +1,27 @@
+version: '3'
+services:
+  fastapi-app1:
+    image: fastapi-stream-app:1.0
+    ports:
+      - "8001:8000"  # 暴露不同端口避免冲突
+
+  fastapi-app2:
+    image: fastapi-stream-app:1.0
+    ports:
+      - "8002:8000"
+
+  fastapi-app3:
+    image: fastapi-stream-app:1.0
+    ports:
+      - "8003:8000"
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "32803:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf  # 挂载 Nginx 配置文件
+    depends_on:
+      - fastapi-app1
+      - fastapi-app2
+      - fastapi-app3
