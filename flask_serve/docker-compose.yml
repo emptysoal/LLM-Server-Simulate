@@ -1,0 +1,27 @@
+version: '3'
+services:
+  flask-app1:
+    image: flask-stream-app:1.0
+    ports:
+      - "5001:5000"  # 暴露不同端口避免冲突
+
+  flask-app2:
+    image: flask-stream-app:1.0
+    ports:
+      - "5002:5000"
+
+  flask-app3:
+    image: flask-stream-app:1.0
+    ports:
+      - "5003:5000"
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "32803:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf  # 挂载 Nginx 配置文件
+    depends_on:
+      - flask-app1
+      - flask-app2
+      - flask-app3
